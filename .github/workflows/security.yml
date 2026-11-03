@@ -1,0 +1,45 @@
+name: security
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 1"
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gitleaks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pinned tools
+        run: scripts/tools.sh gitleaks
+      - name: Scan git history for secrets
+        run: .bin/gitleaks git --redact --exit-code 1 --config .gitleaks.toml .
+
+  trivy-fs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install pinned tools
+        run: scripts/tools.sh trivy
+      - name: Scan repository (vulns, secrets, misconfig)
+        run: .bin/trivy fs --scanners vuln,secret,misconfig --exit-code 1 --severity HIGH,CRITICAL --no-progress --skip-dirs .bin .

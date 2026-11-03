@@ -1,0 +1,76 @@
+groups:
+  - name: ahk-slo
+    interval: 1m
+    rules:
+      - alert: AgentAvailabilityBurnFast
+        expr: |
+          (
+            sum(rate(ahk_requests_total{status="failed"}[1h]))
+            / sum(rate(ahk_requests_total[1h])) > (14.4 * 0.01)
+          )
+          and
+          (
+            sum(rate(ahk_requests_total{status="failed"}[5m]))
+            / sum(rate(ahk_requests_total[5m])) > (14.4 * 0.01)
+          )
+          and (sum(increase(ahk_requests_total[1h])) >= 100)
+        for: 2m
+        labels:
+          severity: page
+          slo: availability
+        annotations:
+          summary: Agent failures are burning the 99% availability budget rapidly
+      - alert: AgentAvailabilityBurnSlow
+        expr: |
+          (
+            sum(rate(ahk_requests_total{status="failed"}[6h]))
+            / sum(rate(ahk_requests_total[6h])) > (6 * 0.01)
+          )
+          and
+          (
+            sum(rate(ahk_requests_total{status="failed"}[30m]))
+            / sum(rate(ahk_requests_total[30m])) > (6 * 0.01)
+          )
+          and (sum(increase(ahk_requests_total[6h])) >= 100)
+        for: 5m
+        labels:
+          severity: ticket
+          slo: availability
+        annotations:
+          summary: Agent failures are steadily burning the 99% availability budget
+      - alert: AgentLatencyBurnFast
+        expr: |
+          (
+            1 - sum(rate(ahk_request_duration_seconds_bucket{le="5"}[1h]))
+            / sum(rate(ahk_request_duration_seconds_count[1h])) > (14.4 * 0.01)
+          )
+          and
+          (
+            1 - sum(rate(ahk_request_duration_seconds_bucket{le="5"}[5m]))
+            / sum(rate(ahk_request_duration_seconds_count[5m])) > (14.4 * 0.01)
+          )
+          and (sum(increase(ahk_request_duration_seconds_count[1h])) >= 100)
+        for: 2m
+        labels:
+          severity: page
+          slo: latency
+        annotations:
+          summary: Active execution latency is burning the 99% under 5s budget rapidly
+      - alert: AgentLatencyBurnSlow
+        expr: |
+          (
+            1 - sum(rate(ahk_request_duration_seconds_bucket{le="5"}[6h]))
+            / sum(rate(ahk_request_duration_seconds_count[6h])) > (6 * 0.01)
+          )
+          and
+          (
+            1 - sum(rate(ahk_request_duration_seconds_bucket{le="5"}[30m]))
+            / sum(rate(ahk_request_duration_seconds_count[30m])) > (6 * 0.01)
+          )
+          and (sum(increase(ahk_request_duration_seconds_count[6h])) >= 100)
+        for: 5m
+        labels:
+          severity: ticket
+          slo: latency
+        annotations:
+          summary: Active execution latency is steadily burning the 99% under 5s budget

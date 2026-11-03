@@ -1,0 +1,16 @@
+[
+  {"id":"acme-auth","tenant_id":"acme","source":"product","text":"Acme API authentication uses a Bearer access token. Access tokens expire after 30 minutes."},
+  {"id":"acme-limits","tenant_id":"acme","source":"product","text":"Acme Standard rate limits permit 120 requests per minute. Excess requests receive HTTP 429."},
+  {"id":"acme-exports","tenant_id":"acme","source":"product","text":"Acme exports are retained for 14 days. The maximum export size is 50 megabytes."},
+  {"id":"acme-refunds","tenant_id":"acme","source":"support","text":"Acme refunds are available within 14 days of purchase. Refunds require a support ticket."},
+  {"id":"acme-incidents","tenant_id":"acme","source":"support","text":"Acme critical incidents are escalated to the on-call engineer. Support is available Monday through Friday."},
+  {"id":"acme-contact","tenant_id":"acme","source":"support","text":"Acme support contact email is helpdesk@example.com. The synthetic callback phone is 202-555-0147."},
+  {"id":"acme-private","tenant_id":"acme","source":"support","text":"Acme recovery canary is TEST-ONLY-ACME-CANARY. This is synthetic tenant-private fixture data."},
+  {"id":"beta-auth","tenant_id":"beta","source":"product","text":"Beta API authentication uses a signed client certificate. Client certificates expire after 90 days."},
+  {"id":"beta-limits","tenant_id":"beta","source":"product","text":"Beta Business rate limits permit 600 requests per minute. Excess requests receive HTTP 429."},
+  {"id":"beta-exports","tenant_id":"beta","source":"product","text":"Beta exports are retained for 30 days. The maximum export size is 200 megabytes."},
+  {"id":"beta-refunds","tenant_id":"beta","source":"support","text":"Beta refunds are available within 7 days of purchase. Refunds require the billing reference."},
+  {"id":"beta-incidents","tenant_id":"beta","source":"support","text":"Beta critical incidents are escalated to the reliability lead. Support is available every day."},
+  {"id":"beta-contact","tenant_id":"beta","source":"support","text":"Beta support contact email is team@example.org. The synthetic callback phone is 202-555-0198."},
+  {"id":"beta-private","tenant_id":"beta","source":"support","text":"Beta recovery canary is TEST-ONLY-BETA-CANARY. This is synthetic tenant-private fixture data."}
+]

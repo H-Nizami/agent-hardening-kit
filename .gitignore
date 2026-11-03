@@ -1,0 +1,31 @@
+# Local tool installs (scripts/tools.sh)
+.bin/
+
+# Python
+.venv/
+.cache/
+*.egg-info/
+build/
+dist/
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Terraform / OpenTofu (.terraform.lock.hcl is committed on purpose)
+.terraform/
+*.tfstate*
+*.tfplan
+
+# Eval raw outputs (summaries are committed)
+eval/results/raw/
+
+# Secrets and credentials
+.env
+.env.*
+*.pem
+*.key
+kubeconfig*
+
+# Misc
+.DS_Store
+tmp/

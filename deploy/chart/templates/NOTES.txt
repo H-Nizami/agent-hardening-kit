@@ -1,0 +1,9 @@
+Local-only lab installed: {{ include "ahk.fullname" . }}
+
+Temporal is the development SQLite server, not a production deployment.
+Worker admission/effects use one SQLite PVC and one Recreate replica.
+Use explicit owned kind context/namespace for every kubectl command.
+Services are ClusterIP only; use loopback-bound port-forward for inspection.
+Grafana is an anonymous read-only Viewer with initial admin creation disabled.
+NetworkPolicy is an intent only on default kindnet, which does not enforce it.
+No cloud resources or live model service are configured.

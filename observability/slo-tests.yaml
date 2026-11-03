@@ -1,0 +1,132 @@
+rule_files:
+  - slo-rules.yaml
+evaluation_interval: 1m
+tests:
+  - name: no traffic does not page
+    interval: 1m
+    input_series:
+      - series: ahk_requests_total{status="failed"}
+        values: 0+0x400
+      - series: ahk_request_duration_seconds_bucket{le="5"}
+        values: 0+0x400
+      - series: ahk_request_duration_seconds_count
+        values: 0+0x400
+    alert_rule_test:
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnSlow
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnSlow
+        exp_alerts: []
+  - name: healthy traffic stays quiet
+    interval: 1m
+    input_series:
+      - series: ahk_requests_total{status="answered"}
+        values: 0+100x400
+      - series: ahk_requests_total{status="failed"}
+        values: 0+0x400
+      - series: ahk_request_duration_seconds_bucket{le="5"}
+        values: 0+100x400
+      - series: ahk_request_duration_seconds_count
+        values: 0+100x400
+    alert_rule_test:
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnSlow
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnSlow
+        exp_alerts: []
+  - name: sustained 20 percent failures and slow requests fire both windows
+    interval: 1m
+    input_series:
+      - series: ahk_requests_total{status="answered"}
+        values: 0+80x400
+      - series: ahk_requests_total{status="failed"}
+        values: 0+20x400
+      - series: ahk_request_duration_seconds_bucket{le="5"}
+        values: 0+80x400
+      - series: ahk_request_duration_seconds_count
+        values: 0+100x400
+    alert_rule_test:
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnFast
+        exp_alerts:
+          - exp_labels: {severity: page, slo: availability}
+            exp_annotations:
+              summary: Agent failures are burning the 99% availability budget rapidly
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnSlow
+        exp_alerts:
+          - exp_labels: {severity: ticket, slo: availability}
+            exp_annotations:
+              summary: Agent failures are steadily burning the 99% availability budget
+      - eval_time: 6h
+        alertname: AgentLatencyBurnFast
+        exp_alerts:
+          - exp_labels: {severity: page, slo: latency}
+            exp_annotations:
+              summary: Active execution latency is burning the 99% under 5s budget rapidly
+      - eval_time: 6h
+        alertname: AgentLatencyBurnSlow
+        exp_alerts:
+          - exp_labels: {severity: ticket, slo: latency}
+            exp_annotations:
+              summary: Active execution latency is steadily burning the 99% under 5s budget
+  - name: one failure with tiny traffic does not page
+    interval: 1m
+    input_series:
+      - series: ahk_requests_total{status="failed"}
+        values: 0+0.01x400
+      - series: ahk_request_duration_seconds_bucket{le="5"}
+        values: 0+0x400
+      - series: ahk_request_duration_seconds_count
+        values: 0+0.01x400
+    alert_rule_test:
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnSlow
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnSlow
+        exp_alerts: []
+  - name: recent recovery suppresses alerts despite a bad long window
+    interval: 1m
+    input_series:
+      - series: ahk_requests_total{status="answered"}
+        values: 0+80x320 25700+100x80
+      - series: ahk_requests_total{status="failed"}
+        values: 0+20x320 6400+0x80
+      - series: ahk_request_duration_seconds_bucket{le="5"}
+        values: 0+80x320 25700+100x80
+      - series: ahk_request_duration_seconds_count
+        values: 0+100x320 32100+100x80
+    alert_rule_test:
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentAvailabilityBurnSlow
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnFast
+        exp_alerts: []
+      - eval_time: 6h
+        alertname: AgentLatencyBurnSlow
+        exp_alerts: []

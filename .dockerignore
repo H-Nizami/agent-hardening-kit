@@ -1,0 +1,17 @@
+.git
+.venv
+.cache
+.bin
+__pycache__
+**/__pycache__
+*.pyc
+.pytest_cache
+*.egg-info
+**/*.egg-info
+build
+dist
+.env
+.env.*
+*.key
+*.pem
+kubeconfig*

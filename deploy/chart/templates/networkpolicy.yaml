@@ -1,0 +1,159 @@
+{{- if .Values.networkPolicy.enabled }}
+# NetworkPolicy requires a policy-capable CNI. Default kindnet does not enforce it.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-default-deny
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress: []
+  egress: []
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-dns
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+          podSelector:
+            matchLabels:
+              k8s-app: kube-dns
+      ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-worker
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+      app.kubernetes.io/component: worker
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: prometheus
+      ports:
+        - protocol: TCP
+          port: 9464
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: temporal
+      ports:
+        - protocol: TCP
+          port: 7233
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-temporal
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+      app.kubernetes.io/component: temporal
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: worker
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: client
+      ports:
+        - protocol: TCP
+          port: 7233
+{{- if .Values.observability.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-prometheus
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+      app.kubernetes.io/component: prometheus
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: grafana
+      ports:
+        - protocol: TCP
+          port: 9090
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: worker
+      ports:
+        - protocol: TCP
+          port: 9464
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-grafana
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+      app.kubernetes.io/component: grafana
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- include "ahk.selector" . | nindent 14 }}
+              app.kubernetes.io/component: prometheus
+      ports:
+        - protocol: TCP
+          port: 9090
+{{- end }}
+{{- end }}

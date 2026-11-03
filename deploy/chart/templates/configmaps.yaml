@@ -1,0 +1,64 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-collector
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+data:
+  collector.yaml: |
+    {{- .Files.Get "files/collector.yaml" | nindent 4 }}
+{{- if .Values.observability.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-prometheus
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 5s
+      evaluation_interval: 1m
+    rule_files:
+      - /etc/prometheus/slo-rules.yaml
+    scrape_configs:
+      - job_name: ahk
+        static_configs:
+          - targets: [{{ printf "%s-worker:9464" (include "ahk.fullname" .) | quote }}]
+  slo-rules.yaml: |
+    {{- .Files.Get "files/slo-rules.yaml" | nindent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-grafana
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+data:
+  datasource.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: ahk-prometheus
+        type: prometheus
+        access: proxy
+        url: {{ printf "http://%s-prometheus:9090" (include "ahk.fullname" .) }}
+        isDefault: true
+        editable: false
+  provider.yaml: |
+    apiVersion: 1
+    providers:
+      - name: ahk
+        orgId: 1
+        type: file
+        disableDeletion: true
+        allowUiUpdates: false
+        options:
+          path: /var/lib/grafana/dashboards
+  dashboard.json: |
+    {{- .Files.Get "files/dashboard.json" | nindent 4 }}
+{{- end }}

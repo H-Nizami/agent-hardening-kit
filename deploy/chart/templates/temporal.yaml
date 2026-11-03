@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-temporal
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+    app.kubernetes.io/component: temporal
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+      app.kubernetes.io/component: temporal
+  template:
+    metadata:
+      labels:
+        {{- include "ahk.selector" . | nindent 8 }}
+        app.kubernetes.io/component: temporal
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        {{- include "ahk.podSecurity" . | nindent 8 }}
+      containers:
+        - name: temporal
+          image: {{ .Values.temporal.image | quote }}
+          imagePullPolicy: IfNotPresent
+          args:
+            - server
+            - start-dev
+            - --ip
+            - 0.0.0.0
+            - --port
+            - "7233"
+            - --headless
+            - --db-filename
+            - /data/temporal.sqlite
+          env:
+            - name: HOME
+              value: /tmp
+            # The image has no passwd entry for UID 10001; the server's OTel resource
+            # detector needs USER when user lookup is unavailable.
+            - name: USER
+              value: temporal
+          securityContext:
+            {{- include "ahk.containerSecurity" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.temporal.resources | nindent 12 }}
+          ports:
+            - name: grpc
+              containerPort: 7233
+          startupProbe:
+            tcpSocket:
+              port: grpc
+            periodSeconds: 2
+            failureThreshold: 60
+          readinessProbe:
+            tcpSocket:
+              port: grpc
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: grpc
+            periodSeconds: 15
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "ahk.fullname" . }}-temporal
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-temporal
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "ahk.selector" . | nindent 4 }}
+    app.kubernetes.io/component: temporal
+  ports:
+    - name: grpc
+      port: 7233
+      targetPort: grpc

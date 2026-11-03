@@ -1,0 +1,19 @@
+{{- range $component, $persistence := dict "worker" .Values.worker.persistence "temporal" .Values.temporal.persistence }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  namespace: {{ $.Release.Namespace }}
+  name: {{ include "ahk.fullname" $ }}-{{ $component }}
+  labels:
+    {{- include "ahk.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $component }}
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- if $persistence.storageClass }}
+  storageClassName: {{ $persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $persistence.size | quote }}
+{{- end }}

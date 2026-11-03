@@ -1,0 +1,55 @@
+name: kind-chaos
+
+# Builds the worker image, installs the chart into a disposable kind cluster on the
+# runner, force-deletes the worker pod mid-run and verifies recovery. The driver
+# always tears the cluster down. Fresh evidence is uploaded as an artifact; the
+# committed evidence/cluster/ files are not reused.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - Dockerfile
+      - Makefile
+      - deploy/**
+      - observability/**
+      - src/**
+      - scripts/**
+      - requirements-dev.lock
+      - pyproject.toml
+      - .github/workflows/chaos.yml
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kind-chaos:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Install locked dependencies, the package and pinned tools
+        run: |
+          python -m pip install --require-hashes -r requirements-dev.lock
+          python -m pip install --no-build-isolation --no-deps .
+          scripts/tools.sh kind kubectl helm
+      - name: Owned kind cluster pod-kill proof
+        run: make chaos
+        env:
+          PYTHON: python
+          CHAOS_OUT: .cache/ci-cluster
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: kind-chaos-evidence
+          path: .cache/ci-cluster/
+          if-no-files-found: error

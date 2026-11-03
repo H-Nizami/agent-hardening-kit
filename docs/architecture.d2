@@ -1,0 +1,46 @@
+vars: { d2-config: { layout-engine: elk; pad: 60 } }
+direction: right
+title: |md # Hardening a LangGraph agent for production | { near: top-center; style.font-size: 48 }
+caption: "Measured locally: 3/3 runs survived a killed worker pod (kind) · 39/39 offline checks · \$0 model spend.\nNot yet measured: live-LLM task success and groundedness. Orange = built here; dashed = target, not built." { near: bottom-center; shape: text; style.font-size: 32 }
+
+# Three styles: `mine` = built and measured here, `neutral` = existing software,
+# `target` = planned, not built (dashed).
+classes: {
+  mine: { style: { fill: "#FFF4E5"; stroke: "#E8590C"; stroke-width: 3; font-color: "#1F1F1F"; bold: true; font-size: 40 } }
+  neutral: { style: { fill: "#F5F6F8"; stroke: "#8A94A6"; stroke-width: 1; font-color: "#1F1F1F"; font-size: 40 } }
+  target: { style: { fill: "#FFFFFF"; stroke: "#8A94A6"; stroke-width: 2; stroke-dash: 6; font-color: "#5A6270"; font-size: 40 } }
+}
+
+# A one-column grid keeps the cover within 2:1.
+control: "Control path" {
+  class: neutral
+  grid-columns: 1
+  vertical-gap: 120
+  client: "Operator CLI\n(tenant)" { class: neutral }
+  temporal: "Temporal\ndev server" { class: neutral }
+}
+# Guardrails and admission run as separate Activities inside the worker pod.
+worker: "Worker pod: Temporal\nWorkflow + Activities" {
+  class: mine
+  grid-columns: 1
+  vertical-gap: 60
+  api: "Input/output\nguardrails" { class: mine }
+  budget: "Per-tenant budget\n+ rate limit\n(SQLite on PVC)" { class: mine }
+}
+ci_eval: "CI eval\ngate\n(39 fixtures)" { class: mine }
+llm_tools: "Fixture backend\n+ retrievers\n(live LLM:\ntarget)" { class: neutral }
+approval: "Human\napproval\n(UID-checked\nUpdate)" { class: mine }
+otel: "OTel\nCollector\nsidecar" { class: neutral; icon: ./icons/opentelemetry-icon-color.png; icon.near: top-left; height: 220 }
+langfuse: "Langfuse\n(target,\nnot built)" { class: target }
+slo: "Prometheus +\nGrafana: SLO\nburn-rate\nrules" { class: mine }
+
+control.client -> control.temporal: "start\nworkflow" { class: neutral; style.font-size: 32 }
+control.temporal -> worker: "tasks" { class: neutral; style.font-size: 32 }
+worker.api -> worker.budget: "validated" { class: neutral; style.font-size: 32 }
+worker -> llm_tools: "schema-\nchecked calls" { class: neutral; style.font-size: 32 }
+worker -> approval: "needs\napproval" { class: neutral; style.font-size: 32 }
+approval -> worker: "approve/\nreject" { class: neutral; style: { font-size: 32; stroke-dash: 5 } }
+worker -> otel: "spans,\nunits, \$" { class: neutral; style.font-size: 32 }
+otel -> langfuse { class: target; style.font-size: 32 }
+otel -> slo: "metrics" { class: neutral; style.font-size: 32 }
+ci_eval -> worker: "blocks\nregressions" { class: neutral; style: { font-size: 32; stroke-dash: 5 } }

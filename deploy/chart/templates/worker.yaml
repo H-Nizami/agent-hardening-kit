@@ -1,0 +1,139 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-worker
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      {{- include "ahk.selector" . | nindent 6 }}
+      app.kubernetes.io/component: worker
+  template:
+    metadata:
+      labels:
+        {{- include "ahk.selector" . | nindent 8 }}
+        app.kubernetes.io/component: worker
+      annotations:
+        checksum/collector: {{ .Files.Get "files/collector.yaml" | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      securityContext:
+        {{- include "ahk.podSecurity" . | nindent 8 }}
+      containers:
+        - name: worker
+          image: {{ include "ahk.workerImage" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [python, -m, agent_hardening_kit]
+          args:
+            - worker
+            - --address
+            - {{ printf "%s-temporal:7233" (include "ahk.fullname" .) | quote }}
+            - --db
+            - /data/agent.sqlite
+            - --queue
+            - {{ .Values.queue | quote }}
+            - --otel-endpoint
+            - http://127.0.0.1:4318
+            - --health-file
+            - /tmp/worker-ready
+            {{- if .Values.worker.faultAfterTicketOnce }}
+            - --fault-after-ticket-once
+            {{- end }}
+          env:
+            - name: HOME
+              value: /tmp
+            - name: LANGSMITH_TRACING
+              value: "false"
+          securityContext:
+            {{- include "ahk.containerSecurity" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+          readinessProbe:
+            exec:
+              command:
+                - python
+                - -c
+                - {{ printf "from pathlib import Path; import socket; assert Path('/tmp/worker-ready').is_file(); socket.create_connection(('%s-temporal', 7233), 2).close()" (include "ahk.fullname" .) | quote }}
+            initialDelaySeconds: 3
+            periodSeconds: 5
+            timeoutSeconds: 3
+          livenessProbe:
+            exec:
+              command: [python, -c, "import os; os.kill(1, 0)"]
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: tmp
+              mountPath: /tmp
+            - name: telemetry
+              mountPath: /telemetry
+              readOnly: true
+        - name: collector
+          image: {{ .Values.collector.image | quote }}
+          imagePullPolicy: IfNotPresent
+          args: [--config=/etc/otelcol/collector.yaml]
+          env:
+            - name: AHK_TRACE_FILE
+              value: /telemetry/traces.jsonl
+          securityContext:
+            {{- include "ahk.containerSecurity" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.collector.resources | nindent 12 }}
+          ports:
+            - name: metrics
+              containerPort: 9464
+          readinessProbe:
+            tcpSocket:
+              port: metrics
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            tcpSocket:
+              port: metrics
+            initialDelaySeconds: 15
+            periodSeconds: 15
+          volumeMounts:
+            - name: collector-config
+              mountPath: /etc/otelcol
+              readOnly: true
+            - name: telemetry
+              mountPath: /telemetry
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "ahk.fullname" . }}-worker
+        - name: tmp
+          emptyDir:
+            sizeLimit: 64Mi
+        - name: telemetry
+          emptyDir:
+            sizeLimit: 128Mi
+        - name: collector-config
+          configMap:
+            name: {{ include "ahk.fullname" . }}-collector
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: {{ .Release.Namespace }}
+  name: {{ include "ahk.fullname" . }}-worker
+  labels:
+    {{- include "ahk.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    {{- include "ahk.selector" . | nindent 4 }}
+    app.kubernetes.io/component: worker
+  ports:
+    - name: metrics
+      port: 9464
+      targetPort: metrics

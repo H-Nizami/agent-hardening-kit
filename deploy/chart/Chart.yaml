@@ -1,0 +1,7 @@
+apiVersion: v2
+name: agent-hardening-kit
+description: Local-only durable fixture agent, Temporal dev service and sanitized telemetry
+type: application
+version: 0.2.0
+appVersion: 0.1.0
+kubeVersion: ">=1.30.0-0"

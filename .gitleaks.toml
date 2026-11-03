@@ -1,0 +1,4 @@
+# Gitleaks configuration: default ruleset, no allowlist.
+# Add path allowlists only with a comment explaining why.
+[extend]
+useDefault = true

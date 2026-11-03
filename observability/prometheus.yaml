@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 1m
+rule_files:
+  - slo-rules.yaml
+scrape_configs:
+  - job_name: agent-hardening-kit
+    static_configs:
+      - targets: [127.0.0.1:9464]
