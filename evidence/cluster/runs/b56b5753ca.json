@@ -1,0 +1,433 @@
+{
+  "actual_model_spend_usd": 0,
+  "cluster_name": "ahk-chaos-b56b5753ca",
+  "deployment_checks": {
+    "all_containers_bounded": true,
+    "ingress_count": 0,
+    "manifest_policy": true,
+    "pods_checked": 4,
+    "pvc_phases": {
+      "ahk-temporal": "Bound",
+      "ahk-worker": "Bound"
+    },
+    "server_side_schema_dry_run": true,
+    "service_types": {
+      "ahk-grafana": "ClusterIP",
+      "ahk-prometheus": "ClusterIP",
+      "ahk-temporal": "ClusterIP",
+      "ahk-worker": "ClusterIP"
+    },
+    "worker_data_claim": "ahk-worker",
+    "worker_data_mounted_writable": true,
+    "worker_resources": {
+      "collector": {
+        "limits": {
+          "cpu": "500m",
+          "memory": "256Mi"
+        },
+        "requests": {
+          "cpu": "50m",
+          "memory": "96Mi"
+        }
+      },
+      "worker": {
+        "limits": {
+          "cpu": "1",
+          "memory": "768Mi"
+        },
+        "requests": {
+          "cpu": "100m",
+          "memory": "256Mi"
+        }
+      }
+    }
+  },
+  "deployment_files": {
+    "Dockerfile": "ce2e3275cf1c8f7945226293a31ffa225b6928d3d045e96db6c6819044874e3e",
+    "deploy/README.md": "470945c2b92aa9dac0dc6dfdebe88cc7d41926a13a529de9814cdb23e8964442",
+    "deploy/chart/Chart.yaml": "72037ce825513d3baa34c8e9a44f5fc92b5cb100f05fb5cb7e81af1210d7f392",
+    "deploy/chart/files/collector.yaml": "6adc7bd9904f07879649f4b1499a584628360a3d631f82b4d7b4ece9a35f9393",
+    "deploy/chart/files/dashboard.json": "a9fd13fca0d3a55a43ed2008e2e8431a884d6be89ac1530a27e5b6f31d67b9f1",
+    "deploy/chart/files/slo-rules.yaml": "dfbae6edba6398445e180b180755e4650f5323aa423eea80fee99ef42dba6837",
+    "deploy/chart/templates/NOTES.txt": "052a07c0dc3bdc9dc77b118b5b369f9d62374c3a40a8c6c92e8a7662109f26d1",
+    "deploy/chart/templates/_helpers.tpl": "8a42d5caedb48208e6969697cf55376a22d327448952c8876d0b230afa4f02c1",
+    "deploy/chart/templates/configmaps.yaml": "4d9856ca8e5f0bc64b56a2d8ce4f55d5646c6f9170ce40864b57c1560ecb58a6",
+    "deploy/chart/templates/networkpolicy.yaml": "1bd7259531b964a3ee7f8c1c7b768ac2da8e0e303e742edc5db82dd80350a303",
+    "deploy/chart/templates/observability.yaml": "bf9cdbe9f41d97b17e87a8e1bca4a3244ec6bb25c3564f43153e6f2b3eb4f8f0",
+    "deploy/chart/templates/persistence.yaml": "8a316ebf0be52be39e7670f2e74b53a79587a0989ed2b667c4bf5f5b5a081e07",
+    "deploy/chart/templates/temporal.yaml": "cafa34bd3bce0cfb6c046dc5f14d2035be9a6850a76f79102d14fe7c611f28fa",
+    "deploy/chart/templates/worker.yaml": "9a15363cd07824f75f4adc66ae547e0dec477dfca05b8d1a7ed7a35796eb1d65",
+    "deploy/chart/values.schema.json": "0e1991cbfc2dbc17e9a83ccb08c6d3efe495d3b951c9fee3461bccb0dcb1a50b",
+    "deploy/chart/values.yaml": "cab2186eb0654f8ac9bd1fc4cefcbaf19f196ebd21af7a70399313be673a8ea5",
+    "deploy/kind.yaml": "a5fea49b668522e905b3395ba62b9d5472e16f9243ee50865415abe7ff3ddd72"
+  },
+  "docker_resources": {
+    "mem_total_bytes": 8317935616,
+    "ncpu": 2
+  },
+  "duration_seconds": 209.57840993500002,
+  "environment": "GitHub Actions runner (Linux x86_64)",
+  "generated_at": "2026-11-03T11:24:44.063451+00:00",
+  "git_revision": "7bcb8c8b23f3faed182e5e96f93b64dbd7ff10ca",
+  "grafana_dashboard_query_passed": true,
+  "grafana_prometheus_datasource_healthy": true,
+  "image_id": "sha256:9e2c85bb3da531a20b8878ba5b69269342e75cc4b61bdcde2a4b4fa629e0ce76",
+  "killed_pod": {
+    "name": "ahk-worker-777bbdb596-5bsc2",
+    "uid": "86432740-b560-4b75-b874-375cbb37c3b5"
+  },
+  "kubernetes_version": "v1.34.11",
+  "metrics_canaries_absent": true,
+  "metrics_series_sha256": "f94d1c04e8e18a464a4d76afff776ccd365cc444308ad36d3209e896ab7323aa",
+  "owned_cluster_removed": true,
+  "prometheus_observed_requests": 3.0,
+  "replacement_pod": {
+    "name": "ahk-worker-777bbdb596-bfkxb",
+    "uid": "6401272b-cf90-4a28-ba1d-3e18e88e2eda"
+  },
+  "restarted_worker_collector_receipt": true,
+  "run_id": "b56b5753ca",
+  "runtime": {
+    "actual_model_spend_usd": 0,
+    "after_recovery": {
+      "charged_microusd": 0,
+      "charged_tokens": 72,
+      "cost_limit_microusd": 0,
+      "frozen": false,
+      "generation_count": 3,
+      "reservation_count": 3,
+      "reserved_tokens": 0,
+      "tenant_id": "acme",
+      "ticket_count": 3,
+      "token_limit": 100000
+    },
+    "attempts": [
+      {
+        "acknowledgement_retry_reused_effect": true,
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 2,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_channel": "unix_socket_kernel_peer_uid",
+        "approval_state": "approved",
+        "case": "recover-1",
+        "effect_count": 1,
+        "history_sha256": "52310bc8fe6a0b67c4a5ee21825bd60997fff5edc5a68043152176e828af8f9c",
+        "pre_kill_activity_counts": {
+          "ahk.generate": 1,
+          "ahk.prepare": 1,
+          "ahk.reserve": 1,
+          "ahk.validate_settle": 1
+        },
+        "pre_kill_stage": "pending_approval",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b56b5753ca-recover-1"
+      },
+      {
+        "acknowledgement_retry_reused_effect": false,
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_channel": "unix_socket_kernel_peer_uid",
+        "approval_state": "approved",
+        "case": "recover-2",
+        "effect_count": 1,
+        "history_sha256": "eb72fe34c96b3e8648d5c4142b7dffc1a8afdfb007a3e963f7e7263b1d4e6c91",
+        "pre_kill_activity_counts": {
+          "ahk.generate": 1,
+          "ahk.prepare": 1,
+          "ahk.reserve": 1,
+          "ahk.validate_settle": 1
+        },
+        "pre_kill_stage": "pending_approval",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b56b5753ca-recover-2"
+      },
+      {
+        "acknowledgement_retry_reused_effect": false,
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_channel": "unix_socket_kernel_peer_uid",
+        "approval_state": "approved",
+        "case": "recover-3",
+        "effect_count": 1,
+        "history_sha256": "3c7ffaf8c66c0afd874598cd76bcbbcddb56ba84cb236263fc6940416e85daae",
+        "pre_kill_activity_counts": {
+          "ahk.generate": 1,
+          "ahk.prepare": 1,
+          "ahk.reserve": 1,
+          "ahk.validate_settle": 1
+        },
+        "pre_kill_stage": "pending_approval",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b56b5753ca-recover-3"
+      },
+      {
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_state": "rejected",
+        "case": "reject",
+        "denied_decisions": {
+          "wrong_action": {
+            "error_type": "WorkflowUpdateFailedError",
+            "rejected": true
+          },
+          "wrong_actor": {
+            "error_type": "WorkflowUpdateFailedError",
+            "rejected": true
+          },
+          "wrong_tenant": {
+            "error_type": "WorkflowUpdateFailedError",
+            "rejected": true
+          }
+        },
+        "effect_count": 0,
+        "history_sha256": "08504ccee59136492b33177a897e59c1117d852b5de07f8b0bccc0bb84dec315",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b56b5753ca-reject"
+      },
+      {
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_state": "approved",
+        "case": "duplicate",
+        "conflicting_decision": {
+          "error_type": "WorkflowUpdateFailedError",
+          "rejected": true
+        },
+        "effect_count": 1,
+        "history_sha256": "279daa45a20d8cbd54ba108d910e831e89bd91ef18465be1cd518853e560530c",
+        "replayed": true,
+        "same_update_id_replayed_result": true,
+        "status": "completed",
+        "workflow_id": "rt-b56b5753ca-duplicate"
+      },
+      {
+        "activities": {
+          "accepted_updates": 0,
+          "maximum_started_attempt": {
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_state": "expired",
+        "case": "expire",
+        "effect_count": 0,
+        "history_sha256": "a48e5a2ddb8b345ade766d3d622ac2de612da744f604b90e2cc986cc83380ce1",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b56b5753ca-expire"
+      }
+    ],
+    "before_kill": {
+      "charged_microusd": 0,
+      "charged_tokens": 72,
+      "cost_limit_microusd": 0,
+      "frozen": false,
+      "generation_count": 3,
+      "reservation_count": 3,
+      "reserved_tokens": 0,
+      "tenant_id": "acme",
+      "ticket_count": 0,
+      "token_limit": 100000
+    },
+    "final_snapshot": {
+      "charged_microusd": 0,
+      "charged_tokens": 144,
+      "cost_limit_microusd": 0,
+      "frozen": false,
+      "generation_count": 6,
+      "reservation_count": 6,
+      "reserved_tokens": 0,
+      "tenant_id": "acme",
+      "ticket_count": 4,
+      "token_limit": 100000
+    },
+    "kill_point": "pending_approval",
+    "lost_acknowledgement_retries_observed": 1,
+    "recovery_attempted": 3,
+    "recovery_completed": 3,
+    "recovery_replay_count": 3,
+    "restart_seconds": 5.350052194,
+    "status": "passed",
+    "total_replayed": 6
+  },
+  "runtime_image_pins": [
+    {
+      "component": "grafana",
+      "containers": [
+        {
+          "image": "sha256:6afa1ab7f6e662c739a45a1d458598d7eb6ab70fc7c0ab45af64864e1503d4b6",
+          "image_id": "docker.io/grafana/grafana@sha256:488984b716c0862639f91a698adbe2862677a5a07bad42da5f03f3030883b205",
+          "name": "grafana"
+        }
+      ]
+    },
+    {
+      "component": "prometheus",
+      "containers": [
+        {
+          "image": "sha256:876ae6bcb0d6c9190d799e82c996fbe5faecdaaa0ec84f5e7dd272c0542ea63c",
+          "image_id": "docker.io/prom/prometheus@sha256:fa3302279710be2f21a8301ec17a8b4f2301fd829bd113839b3b6b02b6f191a2",
+          "name": "prometheus"
+        }
+      ]
+    },
+    {
+      "component": "temporal",
+      "containers": [
+        {
+          "image": "sha256:757183266f6e6a52742d056465ccdce3509d2db59333dfb7492e43ef33d76093",
+          "image_id": "docker.io/temporalio/temporal@sha256:0936c35553b2d8d13c368e44f2628d4d12d4d53d45046f0673c4726499e9a3c0",
+          "name": "temporal"
+        }
+      ]
+    },
+    {
+      "component": "worker",
+      "containers": [
+        {
+          "image": "sha256:28ebddf51f59e38ac800c9f91120726cfb312af377da8908807e0b566a82b017",
+          "image_id": "docker.io/otel/opentelemetry-collector-contrib@sha256:340c9ca6a36617084c6661bdc4f0fe92b7cda5a805d61673ec8db375fddc522b",
+          "name": "collector"
+        },
+        {
+          "image": "docker.io/library/ahk-worker:b56b5753ca",
+          "image_id": "docker.io/library/import-2026-11-03@sha256:09bac39dba319b755e1fdd88fc7457d0f4ca3c3b1bb9f65c8e08513e9481143a",
+          "name": "worker"
+        }
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "scope": "owned local kind pod recovery and live observability",
+  "source_changes_uncommitted": false,
+  "source_files": {
+    "pyproject.toml": "d3a9fbab7cfe689ab8337f82ee58947a1f30eaaa3b871a3dccb1f58929315c2a",
+    "requirements-dev.lock": "3f5365e42b4e6a314932711de26c03f41697bc485f622fdb041d5fa187092e12",
+    "src/agent_hardening_kit/__init__.py": "ad5fdddbe92abd4feb4f3ca03466244b66696aed8515f256bf151d98160e9538",
+    "src/agent_hardening_kit/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/agent_hardening_kit/agent.py": "a0becb3acdad7a4447bb3cbe3f82a840518282ed480fcd3752e3c166dae15133",
+    "src/agent_hardening_kit/backend.py": "07880b192ed7dbc823bcd6e1d21ecd62b2f00333c8911a7d6b6c2b0d76017072",
+    "src/agent_hardening_kit/budget.py": "2208e31b89c5e1ff95e074674ffc7496da7345903a8c59b87960544d3d25aee0",
+    "src/agent_hardening_kit/cli.py": "538990862e5b933a491a8cc3441ffe5634262efad9fc8142d63da1a7e97261ae",
+    "src/agent_hardening_kit/controller.py": "6ce4d1868be1248f5de71990e28bad37350702ff491f48f51744043578a86e4d",
+    "src/agent_hardening_kit/data/cases.json": "f6441e558634a53b92117d04e11168d89d2df7f6b348d3f24ca8706b6603ddd4",
+    "src/agent_hardening_kit/data/corpus.json": "cf2ab193799a32b33d30bd62866eb9d0ec8579a4966e86fa7a0f03c3f1b326f7",
+    "src/agent_hardening_kit/durable.py": "1baf8e5fa05864d3c35f1e2e808ceb39f6f9955c8d44650a862fcb4a1cfa0924",
+    "src/agent_hardening_kit/durable_activities.py": "452dade61037d9d886eebef5943f6dc9c01ff6b7fc3b9ae4d548f31f438b2706",
+    "src/agent_hardening_kit/evaluation.py": "11d68cdbf6c0beefc5aa6b9df0cb756ce2666901935ef06185d32964977c647a",
+    "src/agent_hardening_kit/models.py": "654b54b3683147ef75fca4c2c303b9efef2a05277eb13d45b66e552597124aee",
+    "src/agent_hardening_kit/retrieval.py": "ea8188634a642557ee1bcbf9bc944375b46230effb6c1fcd84b9191e23c09c82",
+    "src/agent_hardening_kit/runtime.py": "f7013c4a971aa0bdcbe53da6a6b9634c2cfc10f0f58ac8c8453bbcbcc2d12fe4",
+    "src/agent_hardening_kit/telemetry.py": "fa58168290287e2bb4fc88577f45a0b2b4d989dbb59753c94572847c14f9dcee",
+    "uv.lock": "7bf55a5887495a63bcbe93920f48670fa0d3e2ebef3259690c13d85685882131"
+  },
+  "source_tree_sha256": "70bfbf57378121f0c72b38193f1a2e24fa084c8d3926dd7f9616d98acab9408b",
+  "status": "passed",
+  "teardown": {
+    "kind_get_clusters_after": [],
+    "owned_cluster_listed_after_teardown": false
+  },
+  "telemetry_pod": "ahk-worker-777bbdb596-bfkxb",
+  "tool_versions": {
+    "docker_server": "28.0.4",
+    "helm": "v3.22.1+gd6c1a0e",
+    "kind": "kind v0.33.0 go1.26.7 linux/amd64",
+    "kubectl_client": "v1.34.11"
+  },
+  "trace_artifact_sha256": "34038ecae1f2428c1f6900b43e10bc0224bb0910ea18ec271cdabfc3f8aac50e",
+  "trace_canaries_absent": true
+}

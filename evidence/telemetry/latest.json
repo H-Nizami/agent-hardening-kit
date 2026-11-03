@@ -1,0 +1,56 @@
+{
+  "actual_model_spend_usd": 0,
+  "collector_config_sha256": "838a0371ff3687402ede8a26791503db877e46c210c6bd0d772df3104f5a5806",
+  "collector_owned_by_check": true,
+  "collector_version": "otelcol-contrib version 0.164.0",
+  "exported_metric_names": [
+    "ahk_fixture_units_total",
+    "ahk_model_cost_USD_total",
+    "ahk_request_duration_seconds_bucket",
+    "ahk_request_duration_seconds_count",
+    "ahk_requests_total",
+    "ahk_stage_duration_seconds_count"
+  ],
+  "generated_at": "2026-11-03T10:46:34.959547+00:00",
+  "local_fixture_latency_seconds": {
+    "definition": "direct durable activity execution including synchronous local export; no approval wait",
+    "max": 0.010885291994782165,
+    "median": 0.004258271001162939,
+    "min": 0.003941542003303766,
+    "p95": 0.010885291994782165
+  },
+  "metrics_passed": true,
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "python_version": "3.12.3",
+  "received_spans": 56,
+  "required_activity_stages": [
+    "ahk.generate",
+    "ahk.prepare",
+    "ahk.reserve",
+    "ahk.validate_settle"
+  ],
+  "sample_count": 12,
+  "sanitization_passed": true,
+  "schema_version": 1,
+  "scope": "local fixture Collector roundtrip",
+  "sensitive_canary_checks": 7,
+  "source_commit": "7bcb8c8b23f3faed182e5e96f93b64dbd7ff10ca",
+  "source_files_sha256": {
+    "observability/collector.yaml": "838a0371ff3687402ede8a26791503db877e46c210c6bd0d772df3104f5a5806",
+    "scripts/check_telemetry.py": "c2a4ef58add3a8936077795aaaa82c20531539941064797abf17555a63f54b67",
+    "src/agent_hardening_kit/backend.py": "07880b192ed7dbc823bcd6e1d21ecd62b2f00333c8911a7d6b6c2b0d76017072",
+    "src/agent_hardening_kit/budget.py": "2208e31b89c5e1ff95e074674ffc7496da7345903a8c59b87960544d3d25aee0",
+    "src/agent_hardening_kit/data/corpus.json": "cf2ab193799a32b33d30bd62866eb9d0ec8579a4966e86fa7a0f03c3f1b326f7",
+    "src/agent_hardening_kit/durable_activities.py": "452dade61037d9d886eebef5943f6dc9c01ff6b7fc3b9ae4d548f31f438b2706",
+    "src/agent_hardening_kit/models.py": "654b54b3683147ef75fca4c2c303b9efef2a05277eb13d45b66e552597124aee",
+    "src/agent_hardening_kit/retrieval.py": "ea8188634a642557ee1bcbf9bc944375b46230effb6c1fcd84b9191e23c09c82",
+    "src/agent_hardening_kit/telemetry.py": "fa58168290287e2bb4fc88577f45a0b2b4d989dbb59753c94572847c14f9dcee"
+  },
+  "source_worktree_dirty": false,
+  "status": "complete",
+  "terminal_control_cases": {
+    "budget_denial": "blocked",
+    "provider_fault": "failed",
+    "unknown_topic": "refused"
+  }
+}

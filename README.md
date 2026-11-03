@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/H-Nizami/agent-hardening-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/H-Nizami/agent-hardening-kit/actions/workflows/ci.yml)
 
-> **Result:** **3/3** runs survived a killed worker pod (local kind) · **39/39** offline checks · **$0** model spend · Not yet measured: live-LLM task success, groundedness, p95 latency, $/task.
+> **Result:** **3/3** runs survived a killed worker pod (kind) · **39/39** offline checks · **$0** model spend · Not yet measured: live-LLM task success, groundedness, p95 latency, $/task.
 
 An executable LangGraph hardening lab: tenant-scoped retrieval, strict input/output
 and tool contracts, synthetic PII redaction, atomic per-tenant admission limits,
@@ -53,8 +53,9 @@ make lint test eval diagram
 ```
 
 For the Temporal, telemetry and kind paths, install the pinned runtime binaries.
-`make chaos` also needs Docker. The recorded local passing run used Docker Desktop
-with 3 CPUs and 2.85 GiB of memory (`docker_resources` in the evidence).
+`make chaos` also needs Docker. The recorded run had 2 CPUs and 7.75 GiB of memory
+(`docker_resources` in the evidence). On a slow network the first image pulls can
+exceed the 10-minute `helm install` timeout; pull the chart images once and rerun.
 
 ```bash
 scripts/tools.sh temporal otelcol-contrib promtool kind kubectl helm
@@ -105,19 +106,16 @@ socket that checks the caller's user ID.
 | Evidence | Result |
 |---|---|
 | [kind pod kill](evidence/cluster/latest.md): runs completed after the worker pod was force-deleted at `pending_approval` | 3/3 |
-| Same run: worker pod deleted to replacement Ready | 7.9 s |
+| Same run: worker pod deleted to replacement Ready | 5.4 s |
 | Same run: histories replayed after restart (recover, reject, duplicate, expire) | 6/6 |
 | Same run: synthetic tickets per approved action, including one retried lost acknowledgement | exactly 1 |
 | [Localhost process kill](evidence/runtime/latest.md) (SIGKILL of the worker) | 3/3 |
 | [Collector roundtrip](evidence/telemetry/latest.md): spans received, canary strings leaked | 56, 0 |
 
-The current kind result was observed locally on a run from the committed revision it
-names. An earlier uncommitted-chart run also passed. The first two attempts failed
-during `helm install`: a `helm install` timeout (cause not recorded), then a
-Temporal start failure (recorded as `CrashLoopBackOff`) fixed in the chart. Both
-are kept in [`evidence/cluster/runs/`](evidence/cluster/runs/). The kind run is
-observed recovery of one local single-node cluster, not an availability SLO.
-The CI chaos job (`kind-chaos`) also passed on a GitHub Actions runner for commit `64b0e0c` ([run](https://github.com/H-Nizami/agent-hardening-kit/actions/runs/41432924927)).
+The kind result comes from the `kind-chaos` job on a GitHub Actions runner, run
+against the committed revision it names ([run](https://github.com/H-Nizami/agent-hardening-kit/actions/runs/41627236161)). The localhost and Collector
+results were recorded on a developer machine for the same revision. The kind run is
+observed recovery of one single-node cluster, not an availability SLO.
 
 ## Implemented behavior
 
@@ -164,7 +162,7 @@ Diagram source: [`docs/architecture.d2`](docs/architecture.d2).
 | T2: Temporal Activities, durable approvals and worker recovery | Implemented, local evidence |
 | T3: OTel Collector, Prometheus metrics, Grafana dashboard, SLO burn-rate rules | Implemented, local evidence |
 | T3 target: Langfuse, Tempo or another remote trace store | Not built |
-| T4: Helm chart, kind deployment and pod-kill recovery | Implemented; local kind run and CI chaos run passed |
+| T4: Helm chart, kind deployment and pod-kill recovery | Implemented; CI kind chaos run passed |
 | Live-model comparison (task success, groundedness, latency, $/task) | Not measured |
 
 `make chart` lints and policy-checks the chart without a cluster. `make chaos`

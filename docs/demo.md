@@ -45,7 +45,5 @@ The driver creates its own `ahk-chaos-<id>` cluster, installs the chart, deletes
 the worker pod while three runs wait for approval, approves them after the
 replacement is Ready, checks effects, replays histories, checks telemetry for
 canaries and deletes the cluster. Read the result in
-[evidence/cluster/latest.md](../evidence/cluster/latest.md); that result was
-observed locally; the same check also passed in CI
-([run](https://github.com/H-Nizami/agent-hardening-kit/actions/runs/41432924927)). Earlier failed attempts stay
-in `evidence/cluster/runs/`.
+[evidence/cluster/latest.md](../evidence/cluster/latest.md), recorded by the CI
+`kind-chaos` job ([run](https://github.com/H-Nizami/agent-hardening-kit/actions/runs/41627236161)). Run `make chaos` to repeat it locally.

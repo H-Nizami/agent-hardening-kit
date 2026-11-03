@@ -18,8 +18,7 @@ and explicit writable volumes. Service-account token mounting is disabled. The
 worker readiness probe requires its polling-started marker and a reachable
 Temporal socket. Liveness checks process presence, not model/provider quality.
 Resources are bounded for a small local Docker environment. The recorded
-local passing kind run used Docker Desktop with 3 CPUs and 2.85 GiB of memory
-(`docker_resources` in the evidence). No Service is exposed
+kind run had 2 CPUs and 7.75 GiB of memory (`docker_resources` in the evidence). No Service is exposed
 outside the cluster; host inspection uses loopback-bound port forwarding.
 
 Grafana has anonymous **Viewer** access with login/signup and initial admin

@@ -1,0 +1,299 @@
+{
+  "actual_model_spend_usd": 0,
+  "duration_seconds": 21.4226640840061,
+  "generated_at": "2026-11-03T10:46:12.875347+00:00",
+  "git_revision": "7bcb8c8b23f3faed182e5e96f93b64dbd7ff10ca",
+  "owned_processes_stopped": true,
+  "platform": {
+    "machine": "arm64",
+    "python": "3.12.3",
+    "system": "Darwin"
+  },
+  "run_id": "b25476af8638",
+  "runtime": {
+    "actual_model_spend_usd": 0,
+    "after_recovery": {
+      "charged_microusd": 0,
+      "charged_tokens": 72,
+      "cost_limit_microusd": 0,
+      "frozen": false,
+      "generation_count": 3,
+      "reservation_count": 3,
+      "reserved_tokens": 0,
+      "tenant_id": "acme",
+      "ticket_count": 3,
+      "token_limit": 100000
+    },
+    "attempts": [
+      {
+        "acknowledgement_retry_reused_effect": true,
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 2,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_channel": "unix_socket_kernel_peer_uid",
+        "approval_state": "approved",
+        "case": "recover-1",
+        "effect_count": 1,
+        "history_sha256": "d0d5e6a2f990657850085280f3f6523f16129352490fb018c550d902b6752d79",
+        "pre_kill_activity_counts": {
+          "ahk.generate": 1,
+          "ahk.prepare": 1,
+          "ahk.reserve": 1,
+          "ahk.validate_settle": 1
+        },
+        "pre_kill_stage": "pending_approval",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b25476af8638-recover-1"
+      },
+      {
+        "acknowledgement_retry_reused_effect": false,
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_channel": "unix_socket_kernel_peer_uid",
+        "approval_state": "approved",
+        "case": "recover-2",
+        "effect_count": 1,
+        "history_sha256": "6004109fc16f539841654e7469426cc33b3513ab098538c32a4e6dea71ef8005",
+        "pre_kill_activity_counts": {
+          "ahk.generate": 1,
+          "ahk.prepare": 1,
+          "ahk.reserve": 1,
+          "ahk.validate_settle": 1
+        },
+        "pre_kill_stage": "pending_approval",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b25476af8638-recover-2"
+      },
+      {
+        "acknowledgement_retry_reused_effect": false,
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_channel": "unix_socket_kernel_peer_uid",
+        "approval_state": "approved",
+        "case": "recover-3",
+        "effect_count": 1,
+        "history_sha256": "366db09ea229c9acee5efbe57581580cc71f70fea43418e655b1380e85bfc551",
+        "pre_kill_activity_counts": {
+          "ahk.generate": 1,
+          "ahk.prepare": 1,
+          "ahk.reserve": 1,
+          "ahk.validate_settle": 1
+        },
+        "pre_kill_stage": "pending_approval",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b25476af8638-recover-3"
+      },
+      {
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_state": "rejected",
+        "case": "reject",
+        "denied_decisions": {
+          "wrong_action": {
+            "error_type": "WorkflowUpdateFailedError",
+            "rejected": true
+          },
+          "wrong_actor": {
+            "error_type": "WorkflowUpdateFailedError",
+            "rejected": true
+          },
+          "wrong_tenant": {
+            "error_type": "WorkflowUpdateFailedError",
+            "rejected": true
+          }
+        },
+        "effect_count": 0,
+        "history_sha256": "62f72d3974c4bbd49df16eb29cf18a50e0cadc55ba3091186c8c4d78acc1433c",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b25476af8638-reject"
+      },
+      {
+        "activities": {
+          "accepted_updates": 1,
+          "maximum_started_attempt": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.apply_ticket": 1,
+            "ahk.authorize_decision": 1,
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_state": "approved",
+        "case": "duplicate",
+        "conflicting_decision": {
+          "error_type": "WorkflowUpdateFailedError",
+          "rejected": true
+        },
+        "effect_count": 1,
+        "history_sha256": "e55ffc972e38dc0959a63aa16cab943968aee90812ea7100b257219d863917aa",
+        "replayed": true,
+        "same_update_id_replayed_result": true,
+        "status": "completed",
+        "workflow_id": "rt-b25476af8638-duplicate"
+      },
+      {
+        "activities": {
+          "accepted_updates": 0,
+          "maximum_started_attempt": {
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          },
+          "scheduled": {
+            "ahk.generate": 1,
+            "ahk.prepare": 1,
+            "ahk.reserve": 1,
+            "ahk.validate_settle": 1
+          }
+        },
+        "approval_state": "expired",
+        "case": "expire",
+        "effect_count": 0,
+        "history_sha256": "86e722e3d351fb14a2e5f84b79c6412a97ac4a05d5aa2c217b53d20af8003d26",
+        "replayed": true,
+        "status": "completed",
+        "workflow_id": "rt-b25476af8638-expire"
+      }
+    ],
+    "before_kill": {
+      "charged_microusd": 0,
+      "charged_tokens": 72,
+      "cost_limit_microusd": 0,
+      "frozen": false,
+      "generation_count": 3,
+      "reservation_count": 3,
+      "reserved_tokens": 0,
+      "tenant_id": "acme",
+      "ticket_count": 0,
+      "token_limit": 100000
+    },
+    "final_snapshot": {
+      "charged_microusd": 0,
+      "charged_tokens": 144,
+      "cost_limit_microusd": 0,
+      "frozen": false,
+      "generation_count": 6,
+      "reservation_count": 6,
+      "reserved_tokens": 0,
+      "tenant_id": "acme",
+      "ticket_count": 4,
+      "token_limit": 100000
+    },
+    "kill_point": "pending_approval",
+    "lost_acknowledgement_retries_observed": 1,
+    "recovery_attempted": 3,
+    "recovery_completed": 3,
+    "recovery_replay_count": 3,
+    "restart_seconds": 0.6120738750032615,
+    "status": "passed",
+    "total_replayed": 6
+  },
+  "schema_version": 1,
+  "scope": "real local Temporal process recovery and authorization controls",
+  "sdk_version": "1.35.0",
+  "server_version": "temporal version 1.6.1 (Server 1.30.1, UI 2.45.3)",
+  "source_changes_uncommitted": false,
+  "source_files": {
+    "pyproject.toml": "d3a9fbab7cfe689ab8337f82ee58947a1f30eaaa3b871a3dccb1f58929315c2a",
+    "requirements-dev.lock": "3f5365e42b4e6a314932711de26c03f41697bc485f622fdb041d5fa187092e12",
+    "src/agent_hardening_kit/__init__.py": "ad5fdddbe92abd4feb4f3ca03466244b66696aed8515f256bf151d98160e9538",
+    "src/agent_hardening_kit/__main__.py": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+    "src/agent_hardening_kit/agent.py": "a0becb3acdad7a4447bb3cbe3f82a840518282ed480fcd3752e3c166dae15133",
+    "src/agent_hardening_kit/backend.py": "07880b192ed7dbc823bcd6e1d21ecd62b2f00333c8911a7d6b6c2b0d76017072",
+    "src/agent_hardening_kit/budget.py": "2208e31b89c5e1ff95e074674ffc7496da7345903a8c59b87960544d3d25aee0",
+    "src/agent_hardening_kit/cli.py": "538990862e5b933a491a8cc3441ffe5634262efad9fc8142d63da1a7e97261ae",
+    "src/agent_hardening_kit/controller.py": "6ce4d1868be1248f5de71990e28bad37350702ff491f48f51744043578a86e4d",
+    "src/agent_hardening_kit/data/cases.json": "f6441e558634a53b92117d04e11168d89d2df7f6b348d3f24ca8706b6603ddd4",
+    "src/agent_hardening_kit/data/corpus.json": "cf2ab193799a32b33d30bd62866eb9d0ec8579a4966e86fa7a0f03c3f1b326f7",
+    "src/agent_hardening_kit/durable.py": "1baf8e5fa05864d3c35f1e2e808ceb39f6f9955c8d44650a862fcb4a1cfa0924",
+    "src/agent_hardening_kit/durable_activities.py": "452dade61037d9d886eebef5943f6dc9c01ff6b7fc3b9ae4d548f31f438b2706",
+    "src/agent_hardening_kit/evaluation.py": "11d68cdbf6c0beefc5aa6b9df0cb756ce2666901935ef06185d32964977c647a",
+    "src/agent_hardening_kit/models.py": "654b54b3683147ef75fca4c2c303b9efef2a05277eb13d45b66e552597124aee",
+    "src/agent_hardening_kit/retrieval.py": "ea8188634a642557ee1bcbf9bc944375b46230effb6c1fcd84b9191e23c09c82",
+    "src/agent_hardening_kit/runtime.py": "f7013c4a971aa0bdcbe53da6a6b9634c2cfc10f0f58ac8c8453bbcbcc2d12fe4",
+    "src/agent_hardening_kit/telemetry.py": "fa58168290287e2bb4fc88577f45a0b2b4d989dbb59753c94572847c14f9dcee",
+    "uv.lock": "7bf55a5887495a63bcbe93920f48670fa0d3e2ebef3259690c13d85685882131"
+  },
+  "source_tree_sha256": "70bfbf57378121f0c72b38193f1a2e24fa084c8d3926dd7f9616d98acab9408b",
+  "source_tree_sha256_after": "70bfbf57378121f0c72b38193f1a2e24fa084c8d3926dd7f9616d98acab9408b",
+  "status": "passed"
+}
