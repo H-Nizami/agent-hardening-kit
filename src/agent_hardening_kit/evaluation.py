@@ -113,7 +113,7 @@ def citation_support(answer, documents):
     )
 
 
-def evaluate_case(case, mode, directory):
+def evaluate_case(case, mode, directory, backend_factory=ProbeBackend):
     corpus = load_corpus()
     if case.get("setup") == "injected_document":
         corpus.append(Document(id="acme-injected", tenant_id="acme", source="support",
@@ -126,7 +126,7 @@ def evaluate_case(case, mode, directory):
     policies = {tenant: TenantPolicy(**(options if tenant == case["tenant_id"] else {}))
                 for tenant in ("acme", "beta")}
     store = BudgetStore(directory / "admission.sqlite", policies)
-    backend = ProbeBackend(case.get("fault"))
+    backend = backend_factory(case.get("fault"))
     request = Request(tenant_id=case["tenant_id"], request_id=case["id"], question=case["question"])
     setup = case.get("setup")
     if setup in {"rate_limit", "same_request_replay", "request_conflict"}:
