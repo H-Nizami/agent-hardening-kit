@@ -2,7 +2,7 @@
 
 [![ci](https://github.com/H-Nizami/agent-hardening-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/H-Nizami/agent-hardening-kit/actions/workflows/ci.yml)
 
-> **Result:** **3/3** runs survived a killed worker pod (kind) · **39/39** offline checks · **$0** model spend · Not yet measured: live-LLM task success, groundedness, p95 latency, $/task.
+> **Result:** **3/3** runs survived a killed worker pod (kind) · **39/39** offline checks · **25/25** live-model checks on `openai/gpt-oss-120b` (versus 2/25 baseline, 20 of 25 cases leaking tenant data) · **$0** model spend · Not yet measured: production task success, $/task.
 
 An executable LangGraph hardening lab: tenant-scoped retrieval, strict input/output
 and tool contracts, synthetic PII redaction, atomic per-tenant admission limits,
@@ -14,6 +14,7 @@ and explicitly disables inherited LangSmith tracing during graph execution.
 ![Architecture: orange boxes are built and measured here; the dashed box is a target](docs/img/architecture.png)
 
 Evidence: [offline fixtures](eval/results/latest.md) ·
+[live-model run](eval/results/live-openai-gpt-oss-120b.md) ·
 [local Temporal recovery](evidence/runtime/latest.md) ·
 [Collector roundtrip](evidence/telemetry/latest.md) ·
 [kind pod-kill recovery](evidence/cluster/latest.md).
@@ -163,7 +164,16 @@ Diagram source: [`docs/architecture.d2`](docs/architecture.d2).
 | T3: OTel Collector, Prometheus metrics, Grafana dashboard, SLO burn-rate rules | Implemented, local evidence |
 | T3 target: Langfuse, Tempo or another remote trace store | Not built |
 | T4: Helm chart, kind deployment and pod-kill recovery | Implemented; CI kind chaos run passed |
-| Live-model comparison (task success, groundedness, latency, $/task) | Not measured |
+| Live-model comparison on model-dependent cases | One free-tier run on `openai/gpt-oss-120b`; see limits below |
+
+The live comparison runs the 25 retrieval, refusal, tenant isolation, PII and
+injection cases against one model at temperature 0 with `ahk eval-live --model
+<model>`, which needs `GROQ_API_KEY`. Treat it as one run of synthetic fixtures:
+passing requires sentences copied from the documents, so it measures grounded
+extraction, not general answer quality. Most baseline failures come from its
+deliberately unscoped retrieval sending other tenants' documents to the model,
+not from the model itself. The other 14 cases do not depend on a model and stay
+offline. Latency includes provider queueing and is not a production figure.
 
 `make chart` lints and policy-checks the chart without a cluster. `make chaos`
 runs the full kind proof and always deletes its own cluster. `make up` / `make

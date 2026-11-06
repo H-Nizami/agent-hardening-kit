@@ -55,7 +55,7 @@ tool or relying on a new flag.
 - `.github/workflows/`: CI, security scans, author check.
 - `src/agent_hardening_kit/`: graph, local backend, contracts, admission and evaluation.
 - `tests/`: unit tests and deliberate-regression checks.
-- `eval/results/`: reproducible offline evidence; no live-model quality claims.
+- `eval/results/latest.*`: reproducible offline evidence. `eval/results/live-*`: a dated live-model run, with its limits stated in the report.
 - `evidence/`: local Temporal recovery, Collector roundtrip and kind pod-kill reports.
 - `deploy/`: Helm chart and kind config for the local lab.
 
@@ -63,4 +63,4 @@ tool or relying on a new flag.
 
 `make lint test eval diagram` is green and `actionlint` is clean. Runtime,
 telemetry and cluster evidence live in `evidence/`; regenerate it rather than
-hand-editing it. Live-model task success and groundedness remain unmeasured.
+hand-editing it. Live-model results cover the fixtures only; production task success remains unmeasured.

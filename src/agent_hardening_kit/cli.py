@@ -1,4 +1,4 @@
-"""Offline fixtures and explicit local runtime commands; no paid provider calls."""
+"""Offline fixtures, local runtime commands, and an explicit opt-in live evaluation."""
 import asyncio
 import argparse
 import json
@@ -26,6 +26,9 @@ def main(argv=None):
     demo.add_argument("--db", type=Path, default=Path(".cache/demo.sqlite"))
     evaluation = commands.add_parser("eval", help="Run fixed offline fixture/control cases")
     evaluation.add_argument("--out", type=Path, default=Path(".cache/eval"))
+    live = commands.add_parser("eval-live", help="Run model-dependent cases against Groq (needs GROQ_API_KEY)")
+    live.add_argument("--model", required=True)
+    live.add_argument("--out", type=Path, default=Path("eval/results"))
     runtime_commands = {}
     for name in ("worker", "start", "status", "result", "approval-controller", "decide"):
         command = commands.add_parser(name, help="Local Temporal " + name)
@@ -67,6 +70,13 @@ def main(argv=None):
                               "actual_model_spend_usd": 0, "backend_calls": backend.calls,
                               "result": answer.model_dump()}, indent=2))
             return 0 if answer.status in {"answered", "refused"} else 2
+        if args.command == "eval-live":
+            from .live import key_from_environment, run_live, write_live_report
+            report = run_live(args.model, key_from_environment())
+            path = write_live_report(report, args.out)
+            hardened = report["systems"]["hardened"]
+            print(f"Live checks on {args.model}: {hardened['passed']}/{hardened['total']}. Report: {path}")
+            return 0
         report = evaluate()
         write_report(report, args.out)
         summary = report["systems"]["hardened"]["summary"]
